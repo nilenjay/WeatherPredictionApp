@@ -28,7 +28,7 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Weather App (Open-Meteo)'),
+        title: const Text('Weather App'),
         centerTitle: true,
         elevation: 4,
       ),
