@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../controllers/home_controller.dart';
 import 'search_screen.dart';
+import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   final HomeController controller = Get.put(HomeController());
+  final user = FirebaseAuth.instance.currentUser; // Logged-in user
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Weather App'),
+        title: Text('Weather App (${user?.email ?? ''})'),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
@@ -21,12 +24,18 @@ class HomeScreen extends StatelessWidget {
               Get.to(() => SearchScreen());
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Get.offAll(() => const LoginScreen()); // Return to login
+            },
+          ),
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(() {
-
           if (controller.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -50,7 +59,6 @@ class HomeScreen extends StatelessWidget {
               ),
             );
           }
-
 
           if (controller.weatherData.value == null) {
             return const Center(
@@ -76,7 +84,8 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 "${current['temperature']}°C",
-                style: const TextStyle(fontSize: 48, fontWeight: FontWeight.w600),
+                style:
+                const TextStyle(fontSize: 48, fontWeight: FontWeight.w600),
               ),
               Text("Wind: ${current['windspeed']} km/h"),
               const SizedBox(height: 20),
