@@ -1,67 +1,47 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../models/weather_model.dart';
 
 class WeatherService {
+  Future<WeatherModel> fetchWeatherByCoords(double lat, double lon) async {
+    final url = Uri.parse(
+      'https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$lon'
+          '&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min,uv_index_max,sunrise,sunset'
+          '&current_weather=true&timezone=auto',
+    );
 
-  Future<Map<String, dynamic>?> getCoordinates(String cityName) async {
-    try {
-      final url = Uri.parse(
-        'https://geocoding-api.open-meteo.com/v1/search?name=$cityName',
-      );
-      final response = await http.get(url);
-
-      if (response.statusCode != 200) {
-        print('❌ Geocoding failed: ${response.statusCode}');
-        return null;
-      }
-
-      final data = jsonDecode(response.body);
-      if (data['results'] == null || data['results'].isEmpty) return null;
-
-      final firstResult = data['results'][0];
-      return {
-        'name': firstResult['name'],
-        'latitude': firstResult['latitude'],
-        'longitude': firstResult['longitude'],
-      };
-    } catch (e) {
-      print('⚠️ Error fetching coordinates: $e');
-      return null;
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      return WeatherModel.fromJson(jsonData);
+    } else {
+      throw Exception('Failed to load weather data');
     }
   }
 
-  Future<Map<String, dynamic>?> getWeatherByCoordinates(
-      double lat, double lon, String cityName) async {
-    try {
-      final url = Uri.parse(
-        'https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$lon&daily=temperature_2m_max,temperature_2m_min,weathercode&current_weather=true&timezone=auto',
-      );
+  Future<WeatherModel> fetchWeatherByCity(String city) async {
+    // Step 1: Get coordinates using Open-Meteo Geocoding API
+    final geoUrl = Uri.parse(
+        'https://geocoding-api.open-meteo.com/v1/search?name=$city&count=1');
+    final geoResponse = await http.get(geoUrl);
 
-      final response = await http.get(url);
-
-      if (response.statusCode != 200) {
-        print('❌ Forecast fetch failed: ${response.statusCode}');
-        return null;
-      }
-
-      final data = jsonDecode(response.body);
-      data['city'] = cityName;
-
-      return data;
-    } catch (e) {
-      print('⚠️ Error fetching weather: $e');
-      return null;
+    if (geoResponse.statusCode != 200) {
+      throw Exception('Failed to get coordinates for $city');
     }
-  }
 
-  Future<Map<String, dynamic>?> getWeather(String cityName) async {
-    final coords = await getCoordinates(cityName);
-    if (coords == null) return null;
+    final geoData = jsonDecode(geoResponse.body);
+    if (geoData['results'] == null || geoData['results'].isEmpty) {
+      throw Exception('City not found: $city');
+    }
 
-    return await getWeatherByCoordinates(
-      coords['latitude'],
-      coords['longitude'],
-      coords['name'],
+    final lat = geoData['results'][0]['latitude'];
+    final lon = geoData['results'][0]['longitude'];
+
+    // Step 2: Fetch weather for those coordinates
+    final weather = await fetchWeatherByCoords(lat, lon);
+    return WeatherModel.fromJson(
+      jsonDecode(jsonEncode(weather.toJson())),
+      city: city,
     );
   }
 }
