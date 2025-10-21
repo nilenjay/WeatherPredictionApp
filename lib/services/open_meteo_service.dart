@@ -2,27 +2,31 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class OpenMeteoService {
-  Future<Map<String, dynamic>?> getWeather(double lat, double lon) async {
+  final String baseUrl = "https://api.open-meteo.com/v1/forecast";
+
+  Future<Map<String, dynamic>?> fetchWeatherData({
+    required double latitude,
+    required double longitude,
+  }) async {
     try {
       final url = Uri.parse(
-        'https://api.open-meteo.com/v1/forecast'
-            '?latitude=$lat'
-            '&longitude=$lon'
-            '&current_weather=true'
-            '&daily=temperature_2m_max,temperature_2m_min,weathercode'
-            '&timezone=auto',
+        "$baseUrl?latitude=$latitude&longitude=$longitude"
+            "&current=temperature_2m,apparent_temperature,weathercode,wind_speed_10m,precipitation"
+            "&hourly=temperature_2m,weathercode,precipitation,wind_speed_10m"
+            "&daily=temperature_2m_max,temperature_2m_min,weathercode,sunrise,sunset,uv_index_max,precipitation_sum,wind_speed_10m_max"
+            "&timezone=auto",
       );
 
       final response = await http.get(url);
 
-      if (response.statusCode != 200) {
-        print('❌ Error fetching weather: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        print("⚠️ Failed to load weather data: ${response.statusCode}");
         return null;
       }
-
-      return jsonDecode(response.body);
     } catch (e) {
-      print('⚠️ Exception: $e');
+      print("❌ Error fetching weather data: $e");
       return null;
     }
   }
