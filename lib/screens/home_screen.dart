@@ -11,6 +11,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -28,7 +30,7 @@ class HomeScreen extends StatelessWidget {
 
         return Stack(
           children: [
-            /// 🔹 Background Image
+            // Background Image
             Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
@@ -38,21 +40,21 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
-            /// 🔹 Illustration on top of background
+            // Illustration behind the sheet
             Positioned(
-              top: 80,
+              top: 300,
               left: 0,
               right: 0,
               child: Image.asset(
-                "assets/hut.png", // your illustration
-                height: 200,
+                "assets/hut.png",
+                height: 300,
                 fit: BoxFit.contain,
               ),
             ),
 
-            /// 🔹 Top Weather Info (city + temperature) above sliding sheet
+            // Top Info (City, Temperature, Wind)
             Positioned(
-              top: 50,
+              top: 100,
               left: 16,
               right: 16,
               child: Column(
@@ -61,59 +63,70 @@ class HomeScreen extends StatelessWidget {
                   Text(
                     weather.city,
                     style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 8),
                   Text(
                     "${weather.temperature.toStringAsFixed(1)}°C",
                     style: const TextStyle(
-                      fontSize: 80,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.white,
-                    ),
+                        fontSize: 72,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 6),
                   Text(
                     "Wind: ${weather.windspeed.toStringAsFixed(1)} km/h",
-                    style: const TextStyle(color: Colors.white70),
+                    style: const TextStyle(color: Colors.white70, fontSize: 16),
                   ),
                 ],
               ),
             ),
 
-            /// 🔹 Sliding Sheet with transparency and blur
+            // Sliding Sheet
             SlidingSheet(
               elevation: 0,
+              color: Colors.transparent,
               cornerRadius: 30,
               snapSpec: const SnapSpec(
                 snap: true,
-                snappings: [0.45, 0.75, 1.0],
+                snappings: [0.35, 0.65, 0.95],
                 positioning: SnapPositioning.relativeToAvailableSpace,
               ),
-              // Make sliding sheet start below illustration
-              minHeight: MediaQuery.of(context).size.height * 0.45,
+              minHeight: screenHeight * 0.35,
               builder: (context, state) {
                 return ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+                  borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(30)),
                   child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                     child: Container(
-                      color: Colors.white.withOpacity(0.2), // semi-transparent
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(30)),
+                        border: Border.all(
+                            color: const Color.fromARGB(77, 255, 255, 255),
+                            width: 1.2),
+                        gradient: const LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            Color.fromARGB(66, 46, 51, 90),
+                            Color.fromARGB(66, 28, 27, 51),
+                          ],
+                        ),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          /// 🔹 Hourly Forecast
+                          // Hourly Forecast
                           const Text(
                             "Hourly Forecast",
                             style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10),
                           SizedBox(
@@ -122,27 +135,29 @@ class HomeScreen extends StatelessWidget {
                               scrollDirection: Axis.horizontal,
                               itemCount: weather.hourlyTimes.length.clamp(0, 24),
                               itemBuilder: (context, index) {
-                                final time = weather.hourlyTimes[index].split('T').last;
+                                final time =
+                                    weather.hourlyTimes[index].split('T').last;
                                 final temp = weather.hourlyTemps[index];
                                 return Container(
                                   width: 70,
                                   margin: const EdgeInsets.only(right: 12),
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
+                                    color: const Color.fromARGB(80, 28, 27, 51), // darker glass
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(time, style: const TextStyle(color: Colors.black87)),
+                                      Text(time,
+                                          style: const TextStyle(
+                                              color: Colors.white70)),
                                       const SizedBox(height: 8),
                                       Text(
                                         "${temp.toStringAsFixed(1)}°",
                                         style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black87,
-                                        ),
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
                                       ),
                                     ],
                                   ),
@@ -152,14 +167,11 @@ class HomeScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
 
-                          /// 🔹 Weekly Forecast
+                          // Weekly Forecast
                           const Text(
                             "Weekly Forecast",
                             style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10),
                           ListView.builder(
@@ -168,19 +180,25 @@ class HomeScreen extends StatelessWidget {
                             itemCount: weather.dates.length,
                             itemBuilder: (context, index) {
                               return Container(
-                                margin: const EdgeInsets.symmetric(vertical: 6),
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                margin:
+                                const EdgeInsets.symmetric(vertical: 6),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 10),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
+                                  color: const Color.fromARGB(80, 28, 27, 51), // darker glass
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(weather.dates[index], style: const TextStyle(color: Colors.black87)),
+                                    Text(weather.dates[index],
+                                        style: const TextStyle(
+                                            color: Colors.white70)),
                                     Text(
                                       "${weather.tempMax[index].toStringAsFixed(1)}° / ${weather.tempMin[index].toStringAsFixed(1)}°",
-                                      style: const TextStyle(color: Colors.black87),
+                                      style: const TextStyle(
+                                          color: Colors.white70),
                                     ),
                                   ],
                                 ),
@@ -189,12 +207,14 @@ class HomeScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
 
-                          /// 🔹 Additional Info
+                          // Additional Info
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              _buildInfoCard("Humidity", "${weather.humidity.toStringAsFixed(0)}%"),
-                              _buildInfoCard("UV Index", "${weather.uvIndex.toStringAsFixed(1)}"),
+                              _buildInfoCard(
+                                  "Humidity", "${weather.humidity.toStringAsFixed(0)}%"),
+                              _buildInfoCard("UV Index",
+                                  "${weather.uvIndex.toStringAsFixed(1)}"),
                             ],
                           ),
                           const SizedBox(height: 16),
@@ -224,22 +244,21 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// 🔹 Reusable Info Card Widget
   Widget _buildInfoCard(String title, String value) {
     return Container(
       width: 150,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
+        color: const Color.fromARGB(80, 28, 27, 51), // darker glass
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         children: [
-          Text(title, style: const TextStyle(color: Colors.black54, fontSize: 16)),
+          Text(title, style: const TextStyle(color: Colors.white70, fontSize: 16)),
           const SizedBox(height: 6),
           Text(value,
               style: const TextStyle(
-                  color: Colors.black87, fontSize: 18, fontWeight: FontWeight.bold)),
+                  color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
         ],
       ),
     );
