@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
-              Get.offAll(() => const LoginScreen()); // Return to login
+              Get.offAll(() => LoginScreen()); // Return to login
             },
           ),
         ],
