@@ -1,3 +1,4 @@
+// lib/controllers/weather_controller.dart
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import '../models/weather_model.dart';
@@ -8,12 +9,19 @@ class WeatherController extends GetxController {
   var isLoading = false.obs;
   var errorMessage = ''.obs;
 
+  // Toggle view: true => hourly, false => weekly
+  var isHourlyView = true.obs;
+
   final WeatherService _weatherService = WeatherService();
 
   @override
   void onInit() {
     super.onInit();
     fetchWeatherByLocation(); // auto-fetch on start
+  }
+
+  void toggleForecastView(bool hourly) {
+    isHourlyView.value = hourly;
   }
 
   /// ✅ Fetch weather using current location
