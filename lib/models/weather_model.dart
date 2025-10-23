@@ -1,5 +1,6 @@
 // lib/models/weather_model.dart
 class WeatherModel {
+  final List<int> dailyWeatherCodes;
   final String city;
   final double temperature;
   final double windspeed;
@@ -19,6 +20,7 @@ class WeatherModel {
   final List<double>? hourlyHumidity;
 
   WeatherModel({
+    required this.dailyWeatherCodes,
     required this.city,
     required this.temperature,
     required this.windspeed,
@@ -42,6 +44,11 @@ class WeatherModel {
     final current = json['current_weather'] ?? {};
     final daily = json['daily'] ?? {};
     final hourly = json['hourly'] ?? {};
+    final List<int> parsedDailyWeatherCodes =
+    (daily['weathercode'] != null)
+        ? List<int>.from((daily['weathercode'] as List).map((e) => (e ?? 0).toInt()))
+        : [];
+
 
     // parse daily values with safety
     double parsedUv = 0;
@@ -78,7 +85,7 @@ class WeatherModel {
     if (placeholderAqi > 500) placeholderAqi = 500;
 
     return WeatherModel(
-      city: city,
+    city: city,
       temperature: (current['temperature'] ?? 0).toDouble(),
       windspeed: (current['windspeed'] ?? 0).toDouble(),
       weatherCode: (current['weathercode'] ?? 0).toInt(),
@@ -99,6 +106,7 @@ class WeatherModel {
       hourlyHumidity: (hourly['relativehumidity_2m'] != null)
           ? List<double>.from((hourly['relativehumidity_2m'] ?? []).map((e) => (e ?? 0).toDouble()))
           : null,
+      dailyWeatherCodes: parsedDailyWeatherCodes,
     );
   }
 
