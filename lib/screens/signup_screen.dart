@@ -58,7 +58,7 @@ class SignupScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          // Card title
+
                           const Center(
                             child: Text(
                               "Sign Up",
@@ -77,7 +77,6 @@ class SignupScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 24),
 
-                          // Name label
                           const Text(
                             "Name",
                             style: TextStyle(
@@ -102,7 +101,6 @@ class SignupScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 16),
 
-                          // Email label
                           const Text(
                             "Email",
                             style: TextStyle(
@@ -127,7 +125,6 @@ class SignupScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 16),
 
-                          // Password label
                           const Text(
                             "Password",
                             style: TextStyle(
@@ -162,7 +159,6 @@ class SignupScreen extends StatelessWidget {
                           )),
                           const SizedBox(height: 24),
 
-                          // Sign Up Button
                           Obx(() => ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFF48319D),
@@ -229,7 +225,6 @@ class SignupScreen extends StatelessWidget {
 
                           const SizedBox(height: 16),
 
-                          // Continue with Google
                           Obx(() => ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
@@ -254,8 +249,6 @@ class SignupScreen extends StatelessWidget {
                           )),
 
                           const SizedBox(height: 16),
-
-                          // Login navigation
 
                         ],
                       ),

@@ -19,7 +19,6 @@ void main() async {
   Get.put(AuthController());
   Get.put(NavigationController());
 
-  // Make the app immersive (no status bar or navigation bar)
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   runApp(const MyApp());

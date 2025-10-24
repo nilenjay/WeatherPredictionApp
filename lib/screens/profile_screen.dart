@@ -30,7 +30,7 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // 🔹 Background
+
           Positioned.fill(
             child: Image.asset(
               "assets/SearchBG 3.jpg",
@@ -48,7 +48,6 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 120),
 
-                // 🔹 Name/Email Block
                 Container(
                   width: 370,
                   height: 121,
@@ -74,7 +73,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      // 🔹 Bigger white profile avatar, slightly lower
+
                       Container(
                         margin: const EdgeInsets.only(top: 8),
                         child: const CircleAvatar(
@@ -112,7 +111,6 @@ class ProfileScreen extends StatelessWidget {
 
                 const SizedBox(height: 30),
 
-                // 🔹 Saved Cities Block
                 StreamBuilder(
                   stream: _authController.firestore
                       .collection('users')
@@ -191,7 +189,6 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
 
-          // 🔹 Logout Button at Bottom
           Positioned(
             bottom: 20,
             left: 10,

@@ -7,9 +7,7 @@ import '../controllers/weather_controller.dart';
 import '../controllers/navigation_controller.dart'; // ✅ new
 import 'search_screen.dart';
 import 'profile_screen.dart';
-
-// Import your ML screen
-import 'ml_screen.dart'; // If you’ve created it separately
+import 'ml_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});

@@ -58,7 +58,7 @@ class LoginScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          // Card title
+
                           const Center(
                             child: Text(
                               "Login",
