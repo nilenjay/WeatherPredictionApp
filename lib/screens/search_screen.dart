@@ -81,7 +81,7 @@ class SearchScreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 100, 20, 20),
             child: Column(
               children: [
-                // Search Box
+
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.15),
@@ -109,7 +109,6 @@ class SearchScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
 
-                // Search Button
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white.withOpacity(0.25),
@@ -131,7 +130,6 @@ class SearchScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
 
-                // Save City Button
                 Obx(() {
                   if (controller.weatherData.value == null) return const SizedBox.shrink();
 
@@ -155,7 +153,6 @@ class SearchScreen extends StatelessWidget {
                 }),
                 const SizedBox(height: 20),
 
-                // Weather Info
                 Expanded(
                   child: Obx(() {
                     if (controller.isLoading.value) {

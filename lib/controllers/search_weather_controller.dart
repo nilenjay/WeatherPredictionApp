@@ -1,4 +1,3 @@
-// lib/controllers/search_weather_controller.dart
 import 'package:get/get.dart';
 import '../models/weather_model.dart';
 import '../services/search_weather_service.dart';

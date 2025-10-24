@@ -5,8 +5,8 @@ class MLController extends GetxController {
   final SeattleWeatherService _service = SeattleWeatherService();
 
   var isLoading = false.obs;
-  var currentWeather = <String, dynamic>{}.obs; // Today’s weather
-  var weeklyForecast = <Map<String, dynamic>>[].obs; // 7-day forecast
+  var currentWeather = <String, dynamic>{}.obs;
+  var weeklyForecast = <Map<String, dynamic>>[].obs;
   var errorMessage = ''.obs;
 
   @override

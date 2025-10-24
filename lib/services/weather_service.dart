@@ -1,11 +1,11 @@
-// lib/services/weather_service.dart
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/weather_model.dart';
 
 class WeatherService {
   Future<WeatherModel> fetchWeatherByCoords(double lat, double lon) async {
-    // Include humidity and precipitation in hourly; include daily precipitation_sum
+
     final url = Uri.parse(
       'https://api.open-meteo.com/v1/forecast'
           '?latitude=$lat&longitude=$lon'
@@ -17,7 +17,6 @@ class WeatherService {
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
-      // The model's factory handles parsing and fallbacks
       return WeatherModel.fromJson(jsonData);
     } else {
       throw Exception('Failed to load weather data (${response.statusCode})');

@@ -53,7 +53,6 @@ class MLScreen extends StatelessWidget {
               );
             }
 
-            // Safely get today's weather
             final tempMax = current['temp_max_c'] ?? 0.0;
             final tempMin = current['temp_min_c'] ?? 0.0;
             final humidity = current['humidity_percent'] ?? 0.0;
@@ -66,7 +65,7 @@ class MLScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // City + Date
+
                   const Text(
                     "Seattle",
                     style: TextStyle(
@@ -85,7 +84,6 @@ class MLScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 25),
 
-                  // Current Weather Card
                   _gradientCard(
                     width: screenWidth * 0.9,
                     padding: const EdgeInsets.symmetric(vertical: 25),
@@ -124,7 +122,6 @@ class MLScreen extends StatelessWidget {
 
                   const SizedBox(height: 25),
 
-                  // Combined Info Card: Humidity, Feels Like, Wind
                   _gradientCard(
                     width: screenWidth * 0.9,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
@@ -140,7 +137,6 @@ class MLScreen extends StatelessWidget {
 
                   const SizedBox(height: 35),
 
-                  // Weekly Forecast Title
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -154,7 +150,6 @@ class MLScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  // Weekly Forecast Row
                   SizedBox(
                     height: 140,
                     child: ListView.builder(
