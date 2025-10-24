@@ -1,70 +1,40 @@
-// lib/screens/home_screen.dart
 import 'dart:ui';
+import 'package:intl/intl.dart';
+import 'package:wtf_sliding_sheet/wtf_sliding_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wtf_sliding_sheet/wtf_sliding_sheet.dart';
 import '../controllers/weather_controller.dart';
-import '../models/weather_model.dart';
-import '../controllers/app_menu_controller.dart';
-import 'package:intl/intl.dart';
+import '../controllers/navigation_controller.dart'; // ✅ new
 import 'search_screen.dart';
 import 'profile_screen.dart';
 
-// Dummy ML screen for now
-class MLScreen extends StatelessWidget {
-  const MLScreen({super.key});
+// Import your ML screen
+import 'ml_screen.dart'; // If you’ve created it separately
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF1C1B33),
-      body: const Center(
-        child: Text(
-          "ML Screen",
-          style: TextStyle(color: Colors.white, fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   final WeatherController controller = Get.put(WeatherController());
-  final MenuController menuController = Get.put(MenuController());
-
-  int _selectedIndex = 0;
+  final NavigationController navController = Get.put(NavigationController());
 
   final List<Widget> _screens = [
     const _HomeContent(),
     SearchScreen(),
-    const MLScreen(),
+    MLScreen(),
     ProfileScreen(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_selectedIndex],
+    return Obx(() => Scaffold(
+      body: _screens[navController.selectedIndex.value],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 28, 27, 51),
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white54,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        currentIndex: navController.selectedIndex.value,
+        onTap: navController.changeTab,
         showUnselectedLabels: true,
         items: const [
           BottomNavigationBarItem(
@@ -85,11 +55,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 }
-
-// ---------------------- ORIGINAL HOME CONTENT ----------------------
 
 class _HomeContent extends StatelessWidget {
   const _HomeContent({super.key});
@@ -127,7 +95,7 @@ class _HomeContent extends StatelessWidget {
 
       return Stack(
         children: [
-          // Background
+
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -149,7 +117,6 @@ class _HomeContent extends StatelessWidget {
             ),
           ),
 
-          // City & Current Weather
           Positioned(
             top: 100,
             left: 16,
@@ -192,7 +159,6 @@ class _HomeContent extends StatelessWidget {
             ),
           ),
 
-          // Sliding Sheet
           SlidingSheet(
             elevation: 0,
             color: Colors.transparent,
@@ -255,7 +221,6 @@ class _HomeContent extends StatelessWidget {
                         }),
                         const SizedBox(height: 10),
 
-                        // Forecast cards
                         Obx(() {
                           final isHourly = controller.isHourlyView.value;
                           final items =
@@ -336,7 +301,6 @@ class _HomeContent extends StatelessWidget {
                         }),
                         const SizedBox(height: 16),
 
-                        // Air Quality
                         Center(
                           child: Container(
                             width: double.infinity,
@@ -363,7 +327,6 @@ class _HomeContent extends StatelessWidget {
                         ),
                         const SizedBox(height: 18),
 
-                        // Info Cards
                         Center(
                           child: Wrap(
                             alignment: WrapAlignment.center,

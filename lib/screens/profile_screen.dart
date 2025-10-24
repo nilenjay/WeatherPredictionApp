@@ -30,7 +30,6 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-
           // 🔹 Background
           Positioned.fill(
             child: Image.asset(
@@ -77,9 +76,9 @@ class ProfileScreen extends StatelessWidget {
                     children: [
                       // 🔹 Bigger white profile avatar, slightly lower
                       Container(
-                        margin: const EdgeInsets.only(top: 8), // moves avatar slightly down
+                        margin: const EdgeInsets.only(top: 8),
                         child: const CircleAvatar(
-                          radius: 40, // bigger size
+                          radius: 40,
                           backgroundColor: Colors.white,
                           child: Icon(Icons.person, size: 40, color: Colors.black87),
                         ),
@@ -129,10 +128,15 @@ class ProfileScreen extends StatelessWidget {
                       width: 370,
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.4),
                         borderRadius: BorderRadius.circular(44),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.2),
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFF422E5A),
+                            Color(0xFF1C1B33),
+                          ],
+                          transform: GradientRotation(2.94),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -159,11 +163,19 @@ class ProfileScreen extends StatelessWidget {
                             runSpacing: 8,
                             children: List<Widget>.from(
                               savedCities.map(
-                                    (city) => Chip(
-                                  label: Text(city,
-                                      style: const TextStyle(color: Colors.white)),
-                                  backgroundColor:
-                                  Colors.blueGrey.withOpacity(0.5),
+                                    (city) => Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: Colors.blueGrey.withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Text(
+                                    city,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
