@@ -5,18 +5,19 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'controllers/app_menu_controller.dart';
+import 'controllers/navigation_controller.dart';
 import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/search_screen.dart';
+import 'screens/ml_screen.dart';
 import 'controllers/auth_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   Get.put(AuthController());
-  Get.put(AppMenuController());
+  Get.put(NavigationController());
 
   // Make the app immersive (no status bar or navigation bar)
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
