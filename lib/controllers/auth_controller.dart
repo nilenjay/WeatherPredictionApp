@@ -23,6 +23,10 @@ class AuthController extends GetxController {
         password: password.trim(),
       );
 
+      // Set the display name in Firebase Auth
+      await userCredential.user!.updateDisplayName(name.trim());
+      await userCredential.user!.reload(); // Refresh user info
+
       // Save user details in Firestore
       await firestore.collection('users').doc(userCredential.user!.uid).set({
         'name': name.trim(),
@@ -45,7 +49,6 @@ class AuthController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
-      // Always stop loading no matter what
       isLoading.value = false;
     }
   }
