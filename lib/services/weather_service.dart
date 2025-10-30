@@ -24,7 +24,7 @@ class WeatherService {
   }
 
   Future<WeatherModel> fetchWeatherByCity(String city) async {
-    // Geocoding to get coords
+    /// Geocoding to get coords
     final geoUrl = Uri.parse(
         'https://geocoding-api.open-meteo.com/v1/search?name=$city&count=1');
     final geoResponse = await http.get(geoUrl);
@@ -43,7 +43,6 @@ class WeatherService {
 
     final weather = await fetchWeatherByCoords(lat, lon);
 
-    // Return with city name set
     return WeatherModel.fromJson(jsonDecode(jsonEncode(weather.toJson())), city: city);
   }
 }

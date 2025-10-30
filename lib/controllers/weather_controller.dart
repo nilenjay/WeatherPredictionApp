@@ -1,4 +1,3 @@
-// lib/controllers/weather_controller.dart
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import '../models/weather_model.dart';
@@ -9,7 +8,7 @@ class WeatherController extends GetxController {
   var isLoading = false.obs;
   var errorMessage = ''.obs;
 
-  // Toggle view: true => hourly, false => weekly
+  /// Toggle view: true => hourly, false => weekly
   var isHourlyView = true.obs;
 
   final WeatherService _weatherService = WeatherService();
@@ -17,14 +16,14 @@ class WeatherController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchWeatherByLocation(); // auto-fetch on start
+    fetchWeatherByLocation();
   }
 
   void toggleForecastView(bool hourly) {
     isHourlyView.value = hourly;
   }
 
-  /// ✅ Fetch weather using current location
+  ///  Fetch weather using current location
   Future<void> fetchWeatherByLocation() async {
     try {
       isLoading.value = true;
@@ -50,12 +49,12 @@ class WeatherController extends GetxController {
         return;
       }
 
-      // ✅ Get current position
+      ///  Get current position
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
 
-      // ✅ Fetch weather from service
+      /// Fetch weather from service
       final data = await _weatherService.fetchWeatherByCoords(
         position.latitude,
         position.longitude,
@@ -69,7 +68,7 @@ class WeatherController extends GetxController {
     }
   }
 
-  /// ✅ Fetch weather by city name (used in search)
+  /// Fetch weather by city name (search ke liye)
   Future<void> fetchWeatherForCity(String city) async {
     try {
       isLoading.value = true;

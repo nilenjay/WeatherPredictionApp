@@ -24,8 +24,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Obs()=> means it tells to rebuild this part automatically whenever a reactive variable changes.
     return Obx(() => Scaffold(
       body: _screens[navController.selectedIndex.value],
+
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 28, 27, 51),
         type: BottomNavigationBarType.fixed,
@@ -103,7 +105,6 @@ class _HomeContent extends StatelessWidget {
             ),
           ),
 
-          // Hut Illustration
           Positioned(
             top: 300,
             left: 0,

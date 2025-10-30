@@ -19,10 +19,10 @@ class SeattleWeatherService {
 
       if (data.isEmpty) return null;
 
-      // First item is today’s current weather
+      /// today’s current weather
       final currentWeather = data[0] as Map<String, dynamic>;
 
-      // Weekly forecast (all days)
+      /// Weekly forecast (all days)
       final weeklyForecast = data.cast<Map<String, dynamic>>();
 
       return {

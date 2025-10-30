@@ -4,7 +4,7 @@ import '../models/weather_model.dart';
 import '../services/weather_service.dart';
 
 class HomeController extends GetxController {
-  var weatherData = Rxn<WeatherModel>(); // ✅ Typed variable instead of Map
+  var weatherData = Rxn<WeatherModel>();
   var isLoading = false.obs;
   var errorMessage = ''.obs;
 

@@ -6,20 +6,16 @@ class GoogleSignInService {
 
   static Future<UserCredential?> signInWithGoogle() async {
     try {
-      // Trigger Google Sign-In
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) return null;
 
-      // Obtain auth details
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
-      // Create credential
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      // Sign in with Firebase
       return await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
       print("Google Sign-In failed: $e");

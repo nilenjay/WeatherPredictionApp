@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../controllers/auth_controller.dart';
 import 'login_screen.dart';
+import 'quick_access_screen.dart';
+
 
 class ProfileScreen extends StatelessWidget {
   final AuthController _authController = Get.find<AuthController>();
@@ -49,9 +51,8 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 120),
 
                 Container(
-                  width: 370,
-                  height: 121,
-                  padding: const EdgeInsets.all(20),
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(44),
                     gradient: const LinearGradient(
@@ -72,42 +73,50 @@ class ProfileScreen extends StatelessWidget {
                     ],
                   ),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-
-                      Container(
-                        margin: const EdgeInsets.only(top: 8),
-                        child: const CircleAvatar(
-                          radius: 40,
-                          backgroundColor: Colors.white,
-                          child: Icon(Icons.person, size: 40, color: Colors.black87),
-                        ),
+                      const CircleAvatar(
+                        radius: 40,
+                        backgroundColor: Colors.white,
+                        child: Icon(Icons.person, size: 40, color: Colors.black87),
                       ),
                       const SizedBox(width: 16),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            user?.displayName ?? "User",
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+
+                      // ✅ Flexible ensures it never overflows
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              user?.displayName ?? "User",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis, // ✅ cut off safely
+                              softWrap: false,
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            user?.email ?? "No Email Available",
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 16,
+                            const SizedBox(height: 4),
+                            Text(
+                              user?.email ?? "No Email Available",
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 16,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: false,
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
+
 
                 const SizedBox(height: 30),
 
@@ -161,23 +170,31 @@ class ProfileScreen extends StatelessWidget {
                             runSpacing: 8,
                             children: List<Widget>.from(
                               savedCities.map(
-                                    (city) => Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blueGrey.withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: Text(
-                                    city,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
+                                    (city) => GestureDetector(
+                                  onTap: () {
+                                    Get.to(() => QuickAccessScreen(city: city));
+
+
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.blueGrey.withOpacity(0.5),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Text(
+                                      city,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
+
                         ],
                       ),
                     );

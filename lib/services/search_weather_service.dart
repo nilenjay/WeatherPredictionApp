@@ -1,4 +1,3 @@
-// lib/services/weather_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/weather_model.dart';
@@ -26,7 +25,7 @@ class WeatherService {
 
   /// Fetch weather by city name
   Future<WeatherModel> fetchWeatherByCity(String city) async {
-    // 1️⃣ Geocoding API to get coordinates
+   /// Geocoding API to get coordinates
     final geoUrl = Uri.parse(
         'https://geocoding-api.open-meteo.com/v1/search?name=$city&count=1');
     final geoResponse = await http.get(geoUrl);
@@ -43,7 +42,7 @@ class WeatherService {
     final lat = geoData['results'][0]['latitude'];
     final lon = geoData['results'][0]['longitude'];
 
-    // 2️⃣ Fetch weather using coords
+    /// Fetch weather using coords
     return fetchWeatherByCoords(lat, lon, cityName: city);
   }
 }

@@ -12,29 +12,24 @@ class AuthController extends GetxController {
 
   var isLoading = false.obs;
 
-  // 🔹 SIGN UP (with Firestore name storage)
   Future<void> signUp(String name, String email, String password) async {
     isLoading.value = true;
     try {
-      // Create Firebase Auth account
       final UserCredential userCredential =
       await auth.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
 
-      // Set the display name in Firebase Auth
       await userCredential.user!.updateDisplayName(name.trim());
-      await userCredential.user!.reload(); // Refresh user info
+      await userCredential.user!.reload();
 
-      // Save user details in Firestore
       await firestore.collection('users').doc(userCredential.user!.uid).set({
         'name': name.trim(),
         'email': email.trim(),
         'createdAt': FieldValue.serverTimestamp(),
       });
 
-      // Navigate to Home
       Get.offAll(() => HomeScreen());
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
@@ -53,7 +48,6 @@ class AuthController extends GetxController {
     }
   }
 
-  // 🔹 LOGIN (Email & Password)
   Future<void> login(String email, String password) async {
     isLoading.value = true;
     try {
@@ -79,7 +73,6 @@ class AuthController extends GetxController {
     }
   }
 
-  // 🔹 LOGIN WITH GOOGLE
   Future<void> loginWithGoogle() async {
     isLoading.value = true;
     try {
@@ -104,7 +97,6 @@ class AuthController extends GetxController {
       final UserCredential userCredential =
       await auth.signInWithCredential(credential);
 
-      // Save user to Firestore if new
       final userDoc =
       firestore.collection('users').doc(userCredential.user!.uid);
       final docSnapshot = await userDoc.get();
@@ -135,7 +127,6 @@ class AuthController extends GetxController {
     }
   }
 
-  // 🔹 SIGN OUT
   Future<void> signOut() async {
     try {
       await auth.signOut();
